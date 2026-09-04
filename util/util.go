@@ -8,16 +8,16 @@ import (
 	"todo-list/models"
 )
 
-const dateFormat = "2006-01-02"
+const DateFormat = "2006-01-02" // Other files need to see this
 
 // Parse a requested new task.
 // The return is the task object and a error, if there's any.
-func parseNewTask(arguments []string, id int) (models.Task, error) {
+func ParseNewTask(arguments []string, id int) (models.Task, error) {
 	if len(arguments) < 2 {
 		return models.Task{}, fmt.Errorf("usage: add <due-date> <objective>")
 	}
 
-	dueDate, err := time.Parse(dateFormat, arguments[0])
+	dueDate, err := time.Parse(DateFormat, arguments[0])
 	if err != nil {
 		return models.Task{}, fmt.Errorf("due date must use YYYY-MM-DD format")
 	}
@@ -30,7 +30,7 @@ func parseNewTask(arguments []string, id int) (models.Task, error) {
 }
 
 // Parse an checking if it's it can be properly read and eventually used.
-func parseID(arguments []string, usage string) (int, error) {
+func ParseID(arguments []string, usage string) (int, error) {
 	if len(arguments) != 1 {
 		return 0, fmt.Errorf("usage: %s", usage)
 	}
@@ -40,4 +40,15 @@ func parseID(arguments []string, usage string) (int, error) {
 		return 0, fmt.Errorf("task ID must be a positive number")
 	}
 	return id, nil
+}
+
+// Find a task with the matching ID in the provide slice of tasks.
+// If the index of the task is not found, -1 will be returned instead.
+func FindTask(tasks []models.Task, id int) int {
+	for index, task := range tasks {
+		if task.ID == id {
+			return index
+		}
+	}
+	return -1
 }
