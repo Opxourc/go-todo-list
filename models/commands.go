@@ -1,7 +1,6 @@
 package models
 
-type Todo struct {
-	ID   int
-	Text string
-	Done bool
+type Command struct {
+	Name        string
+	Description string
 }
