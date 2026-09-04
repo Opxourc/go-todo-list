@@ -17,10 +17,6 @@ func printStart() {
 	fmt.Println("Type 'help' to get a list for a list of commands.")
 }
 
-func printPrompt() {
-	fmt.Print("> ")
-}
-
 func main() {
 	// Print and get all saved tasks if any
 	printStart()
@@ -36,14 +32,12 @@ func main() {
 	}
 
 	// Use a scanner to clear bad inputs
-	printPrompt()
 	scanner := bufio.NewScanner(os.Stdin)
 
 	// Keep grabbing inputs until the user quits
 	for scanner.Scan() {
 		input := strings.TrimSpace(scanner.Text())
 		if input == "" { // If empty, then just ignore and continue
-			printPrompt()
 			continue
 		}
 
