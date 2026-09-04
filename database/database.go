@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"todo-list/models"
 )
 
@@ -18,6 +19,13 @@ const FILE_PATH = "data/tasks.json" // Where all tasks will be stored for presis
 // If one doesn't exist, a new one is created.
 // Returns the pointer to the file if successful.
 func openFile() *os.File {
+	if mkdirErr := os.MkdirAll(filepath.Dir(FILE_PATH), 0755); mkdirErr != nil {
+		log.Fatalf("Failed to create directory for %v: %v\n",
+			FILE_PATH,
+			mkdirErr,
+		)
+	}
+
 	file, openFileErr := os.OpenFile(
 		FILE_PATH,
 		os.O_RDWR|os.O_CREATE,

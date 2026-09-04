@@ -20,6 +20,25 @@ func useTemporaryDataFile(t *testing.T) {
 	}
 }
 
+func TestGetSavedTasksCreatesMissingDataDirectoryAndFile(t *testing.T) {
+	workingDirectory := t.TempDir()
+	originalDirectory, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.Chdir(originalDirectory) })
+	if err := os.Chdir(workingDirectory); err != nil {
+		t.Fatal(err)
+	}
+
+	Tasks = []models.Task{}
+	GetSavedTasks()
+
+	if _, err := os.Stat(FILE_PATH); err != nil {
+		t.Fatalf("expected %s to be created: %v", FILE_PATH, err)
+	}
+}
+
 func TestGetSavedTasksIgnoresWhitespaceOnlyFile(t *testing.T) {
 	workingDirectory := t.TempDir()
 	originalDirectory, err := os.Getwd()
